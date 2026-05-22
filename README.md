@@ -1,61 +1,39 @@
-=======
-# yelpClone
+# Yelp Clone
 
-# Project 3 - *yelpClone*
+![Swift](https://img.shields.io/badge/Swift-3%2B-F05138?logo=swift&logoColor=white)
+![iOS 9+](https://img.shields.io/badge/iOS-9%2B-000000?logo=apple&logoColor=white)
+![UIKit](https://img.shields.io/badge/UIKit-Auto%20Layout-blue)
+![Yelp API](https://img.shields.io/badge/API-Yelp%20v2-FF1A1A)
 
-**yelpClone** is a Yelp search app using the [Yelp API](http://www.yelp.com/developers/documentation/v2/search_api).
+An iOS restaurant search app built with Swift and UIKit, powered by the Yelp API v2.
 
-Time spent: **14** hours spent in total
+## Features
 
-## User Stories
+- Restaurant search with results in a dynamic-height table view
+- Custom cells with proper Auto Layout constraints for variable business names and addresses
+- Search bar integrated in the navigation bar
+- Custom color theme
 
-The following **required** functionality is completed:
+## Tech Stack
 
-- [x ] Table rows for search results should be dynamic height according to the content height.
-- [x ] Custom cells should have the proper Auto Layout constraints.
-- [x ] Search bar should be in the navigation bar (doesn't have to expand to show location like the real Yelp app does).
+| Layer | Technology |
+|---|---|
+| Language | Swift |
+| UI | UIKit, Auto Layout |
+| Networking | Yelp API v2 |
+| Dependencies | CocoaPods |
 
-The following **optional** features are implemented:
+## Setup
 
-- [x ] Search results page
-   - [ ] Infinite scroll for restaurant results.
-   - [ ] Implement map view of restaurant results.
-- [ ] Implement the restaurant detail page.
+```bash
+git clone https://github.com/gerardrecinto/yelpClone.git
+cd yelpClone
+pod install
+open yelpClone.xcworkspace
+```
 
-The following **additional** features are implemented:
+Add your Yelp API key before building.
 
-- [x ] List anything else that you can get done to improve the app functionality!
-- [x ] customized color
-Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
+## Demo
 
-1. 
-2. 
-
-## Video Walkthrough 
-
-Here's a walkthrough of implemented user stories:
-
-<img src='http://imgur.com/9ev7qi3.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
-
-## Notes
-
-Describe any challenges encountered while building the app.
-
-## License
-
-    Copyright [yyyy] [name of copyright owner]
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
->>>>>>> 8941e8a6c5798f19003ff1770d6738fff7ae852a
+![Demo](http://imgur.com/9ev7qi3.gif)
