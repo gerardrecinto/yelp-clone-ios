@@ -18,14 +18,19 @@ class BusinessCell: UITableViewCell {
     @IBOutlet weak var categoriesLabel: UILabel!
     @IBOutlet weak var distanceLabel: UILabel!
 
-    var business: Business! {
+    var business: Business? {
         didSet {
+            guard let business = business else { return }
             nameLabel.text = business.name
-            thumbImageView.setImageWith(business.imageURL!)
+            if let imageURL = business.imageURL {
+                thumbImageView.loadImage(from: imageURL)
+            }
             categoriesLabel.text = business.categories
             addressLabel.text = business.address
-            reviewsCountLabel.text = "\(business.reviewCount!) Reviews"
-            ratingImageView.setImageWith(business.ratingImageURL!)
+            reviewsCountLabel.text = "\(business.reviewCount) Reviews"
+            if let ratingURL = business.ratingImageURL {
+                ratingImageView.loadImage(from: ratingURL)
+            }
             distanceLabel.text = business.distance
         }
     }
