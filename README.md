@@ -1,33 +1,17 @@
 # Yelp Clone
 
-![Swift](https://img.shields.io/badge/Swift-3%2B-F05138?logo=swift&logoColor=white)
-![iOS 9+](https://img.shields.io/badge/iOS-9%2B-000000?logo=apple&logoColor=white)
+![Swift](https://img.shields.io/badge/Swift-6.0-F05138?logo=swift&logoColor=white)
+![iOS 16+](https://img.shields.io/badge/iOS-16%2B-000000?logo=apple&logoColor=white)
 ![UIKit](https://img.shields.io/badge/UIKit-Auto%20Layout-blue)
-![AFNetworking](https://img.shields.io/badge/Networking-AFNetworking%202.5-lightgrey)
 ![Yelp API](https://img.shields.io/badge/API-Yelp%20v2-FF1A1A)
 
 ![Demo](docs/assets/demo2.gif)
 
-> Restaurant search app that authenticates against the Yelp v2 API using OAuth 1.0a via BDBOAuth1Manager, displaying live business results in a self-sizing UITableView with per-row rating images, distance calculations, and an inline search bar.
-
-## Features
-
-- **OAuth 1.0a authentication:** `YelpClient` subclasses `BDBOAuth1RequestOperationManager`, storing the consumer key/secret and pre-fetched access token via `BDBOAuth1Credential` so every `AFHTTPRequestOperation` is signed automatically without manual HMAC-SHA1 work
-- **Parameterized search:** `searchWithTerm(_:sort:categories:deals:completion:)` builds a query dictionary with `ll`, `sort`, `category_filter`, and `deals_filter` keys, then issues a GET to `api.yelp.com/v2/search` via `AFHTTPRequestOperationManager`
-- **Sort modes:** A `YelpSortMode` enum (`bestMatched`, `distance`, `highestRated`) maps directly to Yelp API integer sort values passed as query parameters
-- **Business model parsing:** `Business.init(dictionary:)` extracts nested `location.address` and `location.neighborhoods`, joins category name tuples into a comma-separated string, and converts the raw `distance` field from meters to miles (`milesPerMeter = 0.000621371`)
-- **Self-sizing table rows:** `UITableViewAutomaticDimension` with `estimatedRowHeight` lets Auto Layout drive row height based on multi-line `nameLabel` and `addressLabel` content
-- **Image loading via UIImageView+AFNetworking:** `BusinessCell` calls `setImageWith(_:)` on both `thumbImageView` (business photo) and `ratingImageView` (Yelp star rating image URL), with corner radius clipping applied to the thumbnail via `layer.cornerRadius` and `clipsToBounds`
-- **Live search:** The `UISearchBar` embedded in `navigationItem.titleView` triggers `Business.searchWithTerm` on each `textDidChange` event, re-fetching from the Yelp API rather than filtering a local cache
-- **Singleton client:** `YelpClient.sharedInstance` is initialized once with credentials via `BDBOAuth1Credential` and reused across all search calls
-
-## Tech Stack
-
-| Layer | Technology |
+> Restaurant search app that authenticates against the Yelp v2 API using OAuth 1.0a via Mock data (API deprecated)| Layer | Technology |
 |---|---|
-| Language | Swift 3 |
+| Language | Swift 6.0 |
 | UI | UIKit, Auto Layout, UITableViewAutomaticDimension |
-| Networking | AFNetworking 2.5, BDBOAuth1Manager |
+| Networking | URLSession (native)|
 | API | Yelp API v2 (`/v2/search`) |
 | Auth | OAuth 1.0a (BDBOAuth1Credential, BDBOAuth1RequestOperationManager) |
 | Dependencies | CocoaPods |

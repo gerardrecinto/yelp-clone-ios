@@ -17,7 +17,7 @@ class BusinessCell: UITableViewCell {
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var categoriesLabel: UILabel!
     @IBOutlet weak var distanceLabel: UILabel!
-    
+
     var business: Business! {
         didSet {
             nameLabel.text = business.name
@@ -29,16 +29,16 @@ class BusinessCell: UITableViewCell {
             distanceLabel.text = business.distance
         }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         thumbImageView.layer.cornerRadius = 3
         thumbImageView.clipsToBounds = true
         nameLabel.preferredMaxLayoutWidth = nameLabel.frame.size.width
-        self.backgroundColor = UIColor.cyan
+        self.backgroundColor = UIColor.systemCyan
         // Initialization code
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         nameLabel.preferredMaxLayoutWidth = nameLabel.frame.size.width

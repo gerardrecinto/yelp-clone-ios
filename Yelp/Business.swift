@@ -2,93 +2,53 @@
 //  Business.swift
 //  Yelp
 //
-//  Created by Timothy Lee on 4/23/15.
-//  Copyright (c) 2015 Timothy Lee. All rights reserved.
-//
 
-import UIKit
+import Foundation
 
-class Business: NSObject {
-    let name: String?
-    let address: String?
-    let imageURL: URL?
-    let categories: String?
-    let distance: String?
-    let ratingImageURL: URL?
-    let reviewCount: NSNumber?
-    
-    init(dictionary: NSDictionary) {
-        name = dictionary["name"] as? String
-        
-        let imageURLString = dictionary["image_url"] as? String
-        if imageURLString != nil {
-            imageURL = URL(string: imageURLString!)!
-        } else {
-            imageURL = nil
+class Business {
+    var name: String = ""
+    var address: String = ""
+    var categories: String = ""
+    var distance: String = ""
+    var ratingImageURL: URL?
+    var imageURL: URL?
+    var reviewCount: Int = 0
+
+    init(dictionary: [String: Any]) {
+        name = dictionary["name"] as? String ?? ""
+        reviewCount = dictionary["review_count"] as? Int ?? 0
+        if let location = dictionary["location"] as? [String: Any],
+           let displayAddress = location["display_address"] as? [String] {
+            address = displayAddress.joined(separator: ", ")
         }
-        
-        let location = dictionary["location"] as? NSDictionary
-        var address = ""
-        if location != nil {
-            let addressArray = location!["address"] as? NSArray
-            if addressArray != nil && addressArray!.count > 0 {
-                address = addressArray![0] as! String
-            }
-            
-            let neighborhoods = location!["neighborhoods"] as? NSArray
-            if neighborhoods != nil && neighborhoods!.count > 0 {
-                if !address.isEmpty {
-                    address += ", "
-                }
-                address += neighborhoods![0] as! String
-            }
+        if let cats = dictionary["categories"] as? [[String: String]] {
+            categories = cats.compactMap { $0["title"] }.joined(separator: ", ")
         }
-        self.address = address
-        
-        let categoriesArray = dictionary["categories"] as? [[String]]
-        if categoriesArray != nil {
-            var categoryNames = [String]()
-            for category in categoriesArray! {
-                let categoryName = category[0]
-                categoryNames.append(categoryName)
-            }
-            categories = categoryNames.joined(separator: ", ")
-        } else {
-            categories = nil
+        if let dist = dictionary["distance"] as? Double {
+            distance = String(format: "%.2f mi", dist / 1609.34)
         }
-        
-        let distanceMeters = dictionary["distance"] as? NSNumber
-        if distanceMeters != nil {
-            let milesPerMeter = 0.000621371
-            distance = String(format: "%.2f mi", milesPerMeter * distanceMeters!.doubleValue)
-        } else {
-            distance = nil
+        if let urlString = dictionary["image_url"] as? String {
+            imageURL = URL(string: urlString)
         }
-        
-        let ratingImageURLString = dictionary["rating_img_url_large"] as? String
-        if ratingImageURLString != nil {
-            ratingImageURL = URL(string: ratingImageURLString!)
-        } else {
-            ratingImageURL = nil
+        if let rating = dictionary["rating"] as? Double {
+            let ratingName = String(Int(rating * 10))
+            ratingImageURL = URL(string: "https://s3-media1.fl.yelpcdn.com/assets/2/www/img/5ef3eb3cb162/ico/stars/v1/stars_\(ratingName).png")
         }
-        
-        reviewCount = dictionary["review_count"] as? NSNumber
     }
-    
-    class func businesses(array: [NSDictionary]) -> [Business] {
-        var businesses = [Business]()
-        for dictionary in array {
-            let business = Business(dictionary: dictionary)
-            businesses.append(business)
-        }
-        return businesses
-    }
-    
-    class func searchWithTerm(term: String, completion: @escaping ([Business]?, Error?) -> Void) {
-        _ = YelpClient.sharedInstance.searchWithTerm(term, completion: completion)
-    }
-    
-    class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, completion: @escaping ([Business]?, Error?) -> Void) -> Void {
-        _ = YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, completion: completion)
+
+    static func mockBusinesses() -> [Business] {
+        let raw: [[String: Any]] = [
+            ["name": "Tartine Bakery", "review_count": 4820, "rating": 4.5, "distance": 800.0,
+             "categories": [["title": "Bakeries"]], "location": ["display_address": ["595 Guerrero St", "San Francisco, CA"]]],
+            ["name": "Zuni Cafe", "review_count": 3210, "rating": 4.0, "distance": 1200.0,
+             "categories": [["title": "American (Traditional)"]], "location": ["display_address": ["1658 Market St", "San Francisco, CA"]]],
+            ["name": "Nopa", "review_count": 5670, "rating": 4.5, "distance": 2100.0,
+             "categories": [["title": "American (New)"]], "location": ["display_address": ["560 Divisadero St", "San Francisco, CA"]]],
+            ["name": "Delfina", "review_count": 3890, "rating": 4.5, "distance": 950.0,
+             "categories": [["title": "Italian"]], "location": ["display_address": ["3621 18th St", "San Francisco, CA"]]],
+            ["name": "Tacolicious", "review_count": 2340, "rating": 4.0, "distance": 600.0,
+             "categories": [["title": "Mexican"]], "location": ["display_address": ["741 Valencia St", "San Francisco, CA"]]],
+        ]
+        return raw.map { Business(dictionary: $0) }
     }
 }
